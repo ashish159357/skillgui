@@ -1,0 +1,42 @@
+.search-bar{
+    display: flex;
+    justify-content: center;
+    margin-top: 2%;
+    flex-wrap: wrap;
+   
+}
+.search-bar-item{
+    flex-basis: 50%;
+}
+
+.box-container{
+    width: 90%;
+    margin: auto;
+    display: flex;
+    flex-direction: row;
+    
+}
+.topic{
+    color: #4C1D95;
+    font-family: 'Roboto', sans-serif;
+}
+.box{
+   
+    margin-left: 5%;
+    margin-top: 7%;
+    padding: 3%;
+    cursor: pointer;
+    border-radius: 5px;
+    
+    box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
+    
+}
+.box:hover{
+    transform: scale(1.1);
+    transition: transform 0.2s ease-in-out;
+    
+}
+.box:active{
+    transform: scale(0.8);
+    transition: transform 0.2s;
+}

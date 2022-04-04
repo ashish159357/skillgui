@@ -1,0 +1,21 @@
+.Add-Question{
+    width: 60%;
+    margin: auto;
+    
+}
+.Add-Question-container{
+    background-color: rgb(219, 219, 219);
+    height: 100vh;
+}
+.forms-elements{
+    padding: 10px;
+}
+input{
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+select{
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+textarea{
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
