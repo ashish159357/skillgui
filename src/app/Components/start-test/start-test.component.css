@@ -1,0 +1,28 @@
+.Quetion-container{
+    width: 50%;
+    margin: auto;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
+    
+}
+.Quetion{
+    padding: 3%;
+}
+.options{
+    background-color: rgba(243, 241, 241, 0.658);
+  padding-bottom: 3%;
+}
+.option{
+    padding-left: 3%;
+  padding-right: 3%;
+    border-top: 1px solid rgb(104, 103, 103);
+   
+    padding-top: 2%;
+    padding-bottom: 2%;
+}
+.next-button{
+    margin-left: 2%;
+    margin-bottom: 1.5%;
+    margin-top: 3%;
+}

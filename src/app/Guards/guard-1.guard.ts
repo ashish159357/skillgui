@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot, UrlTree } from '@angular/router';
-import { Observable } from 'rxjs';
+//import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -9,11 +9,10 @@ export class Guard1Guard implements CanActivate {
   router: any;
   canActivate(
     route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+    //state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+      state: RouterStateSnapshot):   Promise<boolean | UrlTree> | boolean | UrlTree {
     let url: string = state.url;
-
     return this.checkLogin(url);
-
   }
 
 
@@ -32,4 +31,5 @@ export class Guard1Guard implements CanActivate {
     return false
   }
 
+  
 }

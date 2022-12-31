@@ -10,6 +10,9 @@ import { Guard1Guard } from './Guards/guard-1.guard';
 import { AppComponent } from './app.component';
 import { AddQuestionComponent } from './Components/add-question/add-question.component';
 import { AdminComponent } from './Components/admin/admin.component';
+import { StartTestComponent } from './Components/start-test/start-test.component';
+import { RegisterComponent } from './Components/register/register.component';
+import { LoginComponent } from './Components/login/login.component';
 
 const routes: Routes = [
   {
@@ -24,11 +27,24 @@ const routes: Routes = [
   },
   {
     path:'Admin',
-    component:AdminComponent
+    component:AdminComponent,
+    canActivate:[Guard1Guard]
   },
   {
     path:"",
     component:HomeComponent
+  },
+  {
+    path:'register',
+    component:RegisterComponent
+  },
+  {
+    path:'login',
+    component:LoginComponent
+  },
+  {
+    path:"start-test/:subject",
+    component:StartTestComponent
   }
 ];
 

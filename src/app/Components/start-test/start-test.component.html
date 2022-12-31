@@ -1,0 +1,51 @@
+<div style="background-color: whitesmoke; min-height: 100vh;padding-top:5%;">
+
+    <div class="Quetion-container">
+
+        <div class="Quetion">
+            <h3 style="font-size:larger;">
+                {{Quetion.que}}
+            </h3>
+            <div *ngIf="Quetion.type">
+                <b style="font-size: small;padding-top: 50%;">Type: Single Choice</b>
+            </div>
+
+            <div *ngIf="!Quetion.type">
+                <b style="font-size: small;padding-top: 50%;">Type: Multiple Choice </b>
+            </div>
+        </div>
+
+        <div class="forms-elements options">
+            <label class="flex items-center option" *ngFor="let option of Quetion.options">
+                <div *ngIf="option">
+                    <div *ngIf="Quetion.type">
+                        <input #singleChoice type="radio" class="form-radio" name="radio"
+                            (change)="checkAns(singleChoice.checked,option,Quetion.ans,Quetion.type)">
+                        <span class="ml-2 cursor-pointer">{{option}}</span>
+                    </div>
+                    <div *ngIf="!Quetion.type">
+                        <input #singleChoice type="checkbox" class="form-radio" name="radio"
+                            (change)="checkAns(singleChoice.checked,option,Quetion.ans,Quetion.type)">
+                        <span class="ml-2 cursor-pointer">{{option}}</span>
+                    </div>
+                </div>
+            </label>
+        </div>
+
+        <input type="submit" class="btn btn-primary next-button" value="Previous" (click)="previousPage()" />
+        <input type="submit" class="btn btn-primary next-button" value="Next" (click)="nextPage()" />
+        <input type="submit" class="btn btn-primary next-button" value="Check" (click)="resultOfQuetion(Quetion.ans)" />
+
+        <div>
+            <button class="btn btn-primary next-button" aria-controls="basicCollapse" aria-expanded="false"
+                x-spread="trigger" (click)="explanation()">Explanation</button>
+            <div class="card card-body mt-2" id="basicCollapse" x-spread="collapse" *ngIf="explanationofans">Anim
+                pariatur cliche
+                reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh
+                helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.</div>
+        </div>
+
+
+
+    </div>
+</div>

@@ -1,5 +1,6 @@
 <app-navbar></app-navbar>
 
+
 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 search-bar">
     <div class="form-icon search-bar-item">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -14,14 +15,7 @@
 
 
 <div class="box-container">
-    <div class="box">
-        <span class="topic">Java</span>
-    </div>
-
-    <div class="box">
-        <span class="topic">Java</span>
-    </div>
-    <div class="box">
-        <span class="topic">Java</span>
+    <div class="box" *ngFor="let s of subjects" routerLink="/start-test/{{s.subject}}">
+        <span class="topic" >{{s.subject}}</span>
     </div>
 </div>

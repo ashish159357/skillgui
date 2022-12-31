@@ -1,3 +1,4 @@
+
 <div class="Add-Question-container">
     <div *ngIf="isEmpty">
         <div class="alert text-red-700 bg-red-100" role="alert">{{Error}}</div>
@@ -8,28 +9,29 @@
         <div class="forms-elements">
             <label class="block text-sm mb-1" for="story">Question:</label>
             <textarea #q formcontrolName="que" name="quetion" class="form-input" id="story"
-                placeholder="Use this to write your Question" rows="3"></textarea>
+                placeholder="Use this to write your Question" rows="3" ></textarea>
         </div>
 
 
 
         <div class="forms-elements">
             <label class="block text-sm mb-1" for="name">Give options with ',' </label>
-            <input #opt class="form-input" placeholder="ex: option-1,option-2,option-3" id="name" name="option">
+            <input #opt class="form-input" placeholder="ex: option-1,option-2,option-3" id="name" name="option" >
         </div>
 
 
-
+      
         <div class="forms-elements">
             <label class="flex items-center">
-                <input #singleChoice type="radio" class="form-radio" name="radio" value="1">
+                <input #singleChoice type="radio" class="form-radio" name="radio">
                 <span class="ml-2 cursor-pointer">Single Choice Option</span>
             </label>
             <label class="flex items-center">
-                <input #multipleChoice type="radio" class="form-radio" name="radio" value="2">
+                <input #multipleChoice type="radio" class="form-radio" name="radio" >
                 <span class="ml-2 cursor-pointer">Multiple Choice Option</span>
             </label>
         </div>
+       
 
         <div class="forms-elements">
             <label class="block text-sm mb-1" for="name">Give Answer with ',' If Multiple Choice</label>
@@ -40,13 +42,13 @@
 
         <div class="forms-elements">
             <label class="block text-sm mb-1" for="color">Select a Subject</label>
-            <select class="form-select" id="color">
-                <option>Red</option>
-                <option>Blue</option>
+            <select #subject class="form-select" id="color">
+                <option *ngFor="let s of subjects">{{s.subject}}</option>
+               
             </select>
         </div>
 
-        <input type="submit" (click)="validate(q.value,opt.value,singleChoice.value,multipleChoice.value,ans.value)" class="btn btn-primary" value="Submit"
+        <input type="submit" (click)="validate(q.value,opt.value,singleChoice.checked,multipleChoice.checked,ans.value,subject.value)" class="btn btn-primary" value="Submit"
             style="margin-left: 10px;" />
     </div>
 </div>

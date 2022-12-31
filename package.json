@@ -21,7 +21,9 @@
     "daisyui": "^2.4.0",
     "kutty": "^0.6.0",
     "rxjs": "~7.5.0",
+    "rxjs-compat": "^6.6.7",
     "tslib": "^2.3.0",
+    "yarn": "^1.22.18",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {
