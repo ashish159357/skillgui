@@ -1,21 +1,18 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Subject } from 'src/app/model/Subjects/subject';
-
+import { GlobalConstants } from 'src/app/Constants/global-constants';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GetSubjectsService {
 
-  private getsubjectsurl:string;
+  private getsubjectsurl: string = GlobalConstants.apiURL + "/api/v1/subjects";
 
-  constructor(private http: HttpClient) {
-    this.getsubjectsurl='http://localhost:8081/subjects'
-   }
+  constructor(private http: HttpClient) {}
 
-   public findSubjects(){
-     console.log("service :",this.http.get<Subject[]>(this.getsubjectsurl))
-      return this.http.get<Subject[]>(this.getsubjectsurl);
-   }
+  public findSubjects() {
+    return this.http.get<Subject[]>(this.getsubjectsurl);
+  }
 }

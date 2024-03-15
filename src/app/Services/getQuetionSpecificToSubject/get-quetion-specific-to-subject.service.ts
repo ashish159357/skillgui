@@ -8,16 +8,12 @@ import { GlobalConstants } from 'src/app/Constants/global-constants';
 })
 export class GetQuetionSpecificToSubjectService {
 
-  private getquetionurl: string='/quetions/';
-  apiUrl=GlobalConstants.apiURL;
+  private getquetionurl: string = GlobalConstants.apiURL + '/api/v1/quetions/';
 
-
-  constructor(private http: HttpClient) {
-    this.getquetionurl = this.apiUrl+'quetions/';
-  }
+  constructor(private http: HttpClient) {}
 
   public getQuetion(su:string){
-    return this.http.get<Quetion[]>(this.getquetionurl+su);
+    return this.http.get<Quetion[]>(this.getquetionurl + su);
   }
 
 }
