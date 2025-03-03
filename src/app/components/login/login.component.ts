@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from 'src/app/Services/auth.service';
+import { AuthService } from 'src/app/services/auth.service';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -13,9 +13,9 @@ export class LoginComponent implements OnInit {
   userName:string | undefined;
   password:string | undefined;
   formData:FormGroup ;
-  
 
-  constructor(private authService:AuthService,private router : Router) { 
+
+  constructor(private authService:AuthService,private router : Router) {
 
     this.formData = new FormGroup({
       userName: new FormControl(""),
@@ -31,10 +31,10 @@ export class LoginComponent implements OnInit {
     this.password = data.password;
 
    /* this.authService.login(this.userName, this.password)
-       .subscribe( (data: any)  => { 
-        console.log("Is Login Success: " + data); 
-  
-       if(data) this.router.navigate(['/']); 
+       .subscribe( (data: any)  => {
+        console.log("Is Login Success: " + data);
+
+       if(data) this.router.navigate(['/']);
   });*/
 
   if(this.authService.login(this.userName, this.password)=="true"){

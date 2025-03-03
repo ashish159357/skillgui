@@ -3,10 +3,10 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Addquetion } from 'src/app/model/AddQuetion/addquetion';
-import { AddQueServiceService } from 'src/app/Services/AddQuetionService/add-que-service.service';
+import { AddQueServiceService } from 'src/app/services/addQuetionService/add-que-service.service';
 import { HomeComponent } from '../home/home.component';
 import { Subject } from 'src/app/model/Subjects/subject';
-import { GetSubjectsService } from 'src/app/Services/GetSubjects/get-subjects.service';
+import { GetSubjectsService } from 'src/app/services/getSubjects/get-subjects.service';
 
 @Component({
   selector: 'app-add-question',
@@ -17,7 +17,7 @@ export class AddQuestionComponent implements OnInit {
 
 
   subjects:Subject[] | undefined;
-  
+
   AddQuestion: Addquetion;
 
   isEmpty: boolean = false;
@@ -26,11 +26,11 @@ export class AddQuestionComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder, private AddQueService: AddQueServiceService,private getsubjectservice:GetSubjectsService) {
     this.AddQuestion = new Addquetion();
-   
+
   }
 
   ngOnInit(): void {
-    
+
     this.getData();
   }
 
@@ -52,7 +52,7 @@ export class AddQuestionComponent implements OnInit {
 
     // this.sendData(q,opt,ans,subject);
   }
- 
+
   sendData(q: string, opt: string, ans: string, singleChoice: Boolean, subject: string) {
     this.AddQuestion.que = q;
 
@@ -63,7 +63,7 @@ export class AddQuestionComponent implements OnInit {
     this.AddQuestion.ans = aa;
 
     this.AddQuestion.type=singleChoice;
-    
+
     this.AddQuestion.subject=subject;
 
     this.AddQueService.save(this.AddQuestion).subscribe();
@@ -71,14 +71,14 @@ export class AddQuestionComponent implements OnInit {
   }
 
 
-  getData(){ 
-   
+  getData(){
+
     var aa=this.getsubjectservice.findSubjects().subscribe((data: Subject[] | undefined)=>
      {
        console.log(data);
        this.subjects=data;
      });
-  
+
   }
 
 

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Quetion } from 'src/app/model/Quetion/quetion';
-import { GlobalConstants } from 'src/app/Constants/global-constants';
+import { GlobalConstants } from 'src/app/constants/global-constants';
 
 @Injectable({
   providedIn: 'root'

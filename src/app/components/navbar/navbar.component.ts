@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from 'src/app/Services/auth.service';
+import { AuthService } from 'src/app/services/auth.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -18,14 +18,6 @@ export class NavbarComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  /*
-  openMenu(){
-    this.menu="true";
-  }
-  closeMenu(){
-    this.menu=undefined;
-  }*/
-  
 
   MenuControll(){
     if(this.menu){
@@ -38,10 +30,11 @@ export class NavbarComponent implements OnInit {
 
 
   logo(){
-    
     this.authservice.logout()
-   
+  }
 
+  navigateToGame(){
+      this.router.navigate(['/game'])
   }
 
 }

@@ -1,0 +1,127 @@
+<!-- Error Handling and Form Section -->
+<div *ngIf="serverResponse.errorCode !== 0" class="p-6 md:p-12 bg-gray-100 min-h-screen flex flex-col items-center">
+
+  <!-- Search Box -->
+  <div id="search-container" class="w-full max-w-xl mb-8 relative">
+    <input type="text" id="search-input" placeholder="🔍 Search subjects..." (input)="onInput($event)"
+      (keydown)="onKeyDown($event)"
+      class="w-full p-4 pl-12 text-base rounded-full border border-gray-300 shadow focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:outline-none bg-white placeholder-gray-400" />
+
+    <!-- Suggestions Dropdown -->
+    <div id="suggestions"
+      class="absolute z-20 w-full mt-2 bg-white rounded-xl shadow-2xl border border-gray-200 max-h-60 overflow-y-auto transition-all duration-300"
+      *ngIf="filteredsubjects.length > 0">
+      <div
+        class="suggestion px-5 py-3 text-base text-gray-700 hover:bg-indigo-100 hover:text-indigo-700 cursor-pointer flex items-center gap-2 transition-all"
+        *ngFor="let item of filteredsubjects; let i = index" [ngClass]="{
+        'bg-indigo-50 text-indigo-700 font-semibold': i === selectedIndex
+      }" (click)="onSelectItem(item.subject)">
+        {{ item.subject }}
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Form -->
+  <div class="w-full max-w-xl bg-white p-8 rounded-2xl shadow-md border border-gray-200">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-6">
+
+      <!-- Number of Players -->
+      <div>
+        <label class="block text-base font-semibold text-gray-700 mb-2">🎮 Number of Players</label>
+        <input id="no_of_player" formControlName="no_of_player" type="number"
+          class="w-full p-3 text-base rounded-lg border border-gray-300 bg-gray-50 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:outline-none" />
+        <div
+          *ngIf="form.get('no_of_player')?.invalid && (form.get('no_of_player')?.dirty || form.get('no_of_player')?.touched)"
+          class="text-red-500 text-sm mt-1">
+          <small *ngIf="form.get('no_of_player')?.errors?.['required']">This field is required.</small>
+          <small *ngIf="form.get('no_of_player')?.errors?.['min']">Minimum value is 1.</small>
+        </div>
+      </div>
+
+      <!-- Number of Questions -->
+      <div>
+        <label class="block text-base font-semibold text-gray-700 mb-2">❓ Number of Questions</label>
+        <input id="no_of_question" formControlName="no_of_question" type="number"
+          class="w-full p-3 text-base rounded-lg border border-gray-300 bg-gray-50 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:outline-none" />
+        <div
+          *ngIf="form.get('no_of_question')?.invalid && (form.get('no_of_question')?.dirty || form.get('no_of_question')?.touched)"
+          class="text-red-500 text-sm mt-1">
+          <small *ngIf="form.get('no_of_question')?.errors?.['required']">This field is required.</small>
+          <small *ngIf="form.get('no_of_question')?.errors?.['min']">Minimum value is 1.</small>
+        </div>
+      </div>
+
+      <!-- Time for Each Question -->
+      <div>
+        <label class="block text-base font-semibold text-gray-700 mb-2">⏰ Time per Question (seconds)</label>
+        <input id="time_for_each_question" formControlName="time_for_each_question" type="number"
+          class="w-full p-3 text-base rounded-lg border border-gray-300 bg-gray-50 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:outline-none" />
+        <div
+          *ngIf="form.get('time_for_each_question')?.invalid && (form.get('time_for_each_question')?.dirty || form.get('time_for_each_question')?.touched)"
+          class="text-red-500 text-sm mt-1">
+          <small *ngIf="form.get('time_for_each_question')?.errors?.['required']">This field is required.</small>
+          <small *ngIf="form.get('time_for_each_question')?.errors?.['min']">Minimum 1 second.</small>
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit"
+        class="w-full py-3 bg-indigo-600 text-white text-lg font-bold rounded-full shadow hover:bg-indigo-700 hover:scale-105 transform transition">
+        🚀 Submit
+      </button>
+    </form>
+  </div>
+</div>
+
+<!-- 500 Error Section -->
+<section *ngIf="serverResponse.errorCode === 0" class="px-4 py-24 mx-auto max-w-4xl text-center">
+  <h1 class="text-7xl font-extrabold text-indigo-600 mb-6">500 🚧</h1>
+  <p class="text-2xl text-gray-800 font-bold mb-4">{{ serverResponse.message }}</p>
+  <p class="text-base text-gray-600">
+    Please try again later. Need help? Visit our
+    <a href="#" class="underline text-indigo-600">Docs</a>,
+    check out our
+    <a href="#" class="underline text-indigo-600">Community</a>,
+    or return to the
+    <a href="#" class="underline text-indigo-600">Homepage</a>.
+  </p>
+</section>
+
+<!-- Popup -->
+<div class="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center" *ngIf="isVisible">
+  <div class="bg-white p-6 rounded-2xl shadow-xl text-center border border-gray-200 w-full max-w-2xl">
+
+    <h2 class="text-2xl font-bold text-indigo-600 mb-4">🔗 Copy Game Link</h2>
+
+    <div class="flex items-center gap-2 mb-4">
+      <input type="text" [(ngModel)]="generatedGameLink" readonly
+        class="flex-1 p-3 rounded-lg border border-gray-300 bg-gray-50" />
+      <button (click)="copyLink()" class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">
+        Copy
+      </button>
+    </div>
+
+    <!-- Copied message -->
+    <div *ngIf="copiedMessage" class="text-green-600 text-sm font-medium mb-4 animate-fade-in">
+      {{ copiedMessage }}
+    </div>
+
+    <div class="flex flex-col items-center gap-1">
+
+      <!-- Go to Link button -->
+      <button (click)="redirectToLink()"
+        class="mb-6 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
+        [disabled]="!generatedGameLink">
+        🌐 Go to Link
+      </button>
+
+      <!-- Close button -->
+      <button (click)="closePopup()" class="text-indigo-600 underline">
+        Close
+      </button>
+    </div>
+
+
+  </div>
+</div>

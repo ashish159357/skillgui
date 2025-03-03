@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from 'src/app/Services/auth.service';
-import { GetSubjectsService } from 'src/app/Services/GetSubjects/get-subjects.service';
+import { AuthService } from 'src/app/services/auth.service';
+import { GetSubjectsService } from 'src/app/services/getSubjects/get-subjects.service';
 import { Subject } from 'src/app/model/Subjects/subject';
 
 @Component({
@@ -28,14 +28,14 @@ export class HomeComponent implements OnInit {
  }
 
 
- getData(){ 
-   
+ getData(){
+
    var aa=this.getsubjectservice.findSubjects().subscribe((data: Subject[] | undefined)=>
     {
       console.log(data);
       this.subjects=data;
     });
- 
+
  }
 
 }

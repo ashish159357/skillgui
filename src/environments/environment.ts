@@ -3,7 +3,10 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  gameUrl: 'http://localhost:4200/',
+  webSocketUrl: 'http://localhost:8082/ws',
+  gameServiceUrl: 'http://localhost:8082'
 };
 
 /*

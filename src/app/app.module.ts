@@ -1,20 +1,19 @@
-import { NgModule,CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
-
-
-import { NavbarComponent } from './Components/navbar/navbar.component';
-import { HomeComponent } from './Components/home/home.component';
-import { AdminComponent } from './Components/admin/admin.component';
-import { AddQuestionComponent } from './Components/add-question/add-question.component';
-import { StartTestComponent } from './Components/start-test/start-test.component';
-import { RegisterComponent } from './Components/register/register.component';
-import { LoginComponent } from './Components/login/login.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
+import { HomeComponent } from './components/home/home.component';
+import { AdminComponent } from './components/admin/admin.component';
+import { AddQuestionComponent } from './components/add-question/add-question.component';
+import { StartTestComponent } from './components/start-test/start-test.component';
+import { RegisterComponent } from './components/register/register.component';
+import { LoginComponent } from './components/login/login.component';
+import { GameComponent } from './components/game/game.component';
+import { WebSocketServiceComponent } from './services/web-socket-service/web-socket-service.component';
+import { StartGameComponent } from './components/game/start-game/start-game.component';
 
 
 
@@ -22,14 +21,16 @@ import { LoginComponent } from './Components/login/login.component';
 @NgModule({
   declarations: [
     AppComponent,
-   HomeComponent,
- 
+    HomeComponent,
     NavbarComponent,
-      AdminComponent,
-      AddQuestionComponent,
-      StartTestComponent,
-      RegisterComponent,
-      LoginComponent,
+    AdminComponent,
+    AddQuestionComponent,
+    StartTestComponent,
+    RegisterComponent,
+    LoginComponent,
+    GameComponent,
+    WebSocketServiceComponent,
+    StartGameComponent,
   ],
   imports: [
     BrowserModule,
@@ -37,10 +38,8 @@ import { LoginComponent } from './Components/login/login.component';
     HttpClientModule,
     ReactiveFormsModule,
     AppRoutingModule,
- 
-    
   ],
-  schemas:[CUSTOM_ELEMENTS_SCHEMA],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [],
   bootstrap: [AppComponent]
 })

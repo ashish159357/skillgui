@@ -10,13 +10,13 @@ export class Guard1Guard implements CanActivate {
   canActivate(
     route: ActivatedRouteSnapshot,
     //state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-      state: RouterStateSnapshot):   Promise<boolean | UrlTree> | boolean | UrlTree {
+    state: RouterStateSnapshot): Promise<boolean | UrlTree> | boolean | UrlTree {
     let url: string = state.url;
     return this.checkLogin(url);
   }
 
 
-  checkLogin(url: string): true | UrlTree|false {
+  checkLogin(url: string): true | UrlTree | false {
     console.log("Url: " + url)
     let val: string | null = localStorage.getItem('isUserLoggedIn');
 
@@ -31,5 +31,5 @@ export class Guard1Guard implements CanActivate {
     return false
   }
 
-  
+
 }

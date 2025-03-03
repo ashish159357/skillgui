@@ -1,6 +1,6 @@
 import { Component, OnInit, asNativeElements } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { GetQuetionSpecificToSubjectService } from 'src/app/Services/getQuetionSpecificToSubject/get-quetion-specific-to-subject.service';
+import { GetQuetionSpecificToSubjectService } from 'src/app/services/getQuetionSpecificToSubject/get-quetion-specific-to-subject.service';
 import { Quetion } from 'src/app/model/Quetion/quetion';
 
 @Component({
@@ -19,18 +19,19 @@ export class StartTestComponent implements OnInit {
   flag: boolean | undefined;
 
 
-  constructor(private route: ActivatedRoute, private getquetionspecificTosubjectservice: GetQuetionSpecificToSubjectService) {
-
+  constructor(private route: ActivatedRoute, private getquetionspecificTosubjectservice: GetQuetionSpecificToSubjectService)
+  {
     this.subject = this.route.snapshot.paramMap.get('subject');
     this.explanationofans = false
   }
 
-  ngOnInit(): void {
+  ngOnInit(): void
+  {
     this.getQuetions();
-
   }
 
-  getQuetions() {
+  getQuetions()
+  {
     this.getquetionspecificTosubjectservice.getQuetion(this.subject).subscribe((data: Quetion[] | undefined) => {
       this.Quetions = data;
       console.log(this.Quetions);
@@ -64,7 +65,7 @@ export class StartTestComponent implements OnInit {
       this.selectedans.add(option);
     }
 
-    
+
     if (singleChoice == true) {
       this.selectedans.add(option);
     }
