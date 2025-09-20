@@ -13,8 +13,6 @@ export class AuthService {
   isUserLoggedIn: boolean = false;
 
   login(userName: string | undefined, password: string | undefined): any {
-    console.log(userName);
-    console.log(password);
     this.isUserLoggedIn = userName == 'admin' && password == 'admin';
     localStorage.setItem('isUserLoggedIn', this.isUserLoggedIn ? "true" : "false");
 

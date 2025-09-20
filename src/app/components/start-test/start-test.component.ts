@@ -34,8 +34,6 @@ export class StartTestComponent implements OnInit {
   {
     this.getquetionspecificTosubjectservice.getQuetion(this.subject).subscribe((data: Quetion[] | undefined) => {
       this.Quetions = data;
-      console.log(this.Quetions);
-
       this.Quetion = this.Quetions[this.i];
     })
   }
@@ -72,14 +70,9 @@ export class StartTestComponent implements OnInit {
     else {
       this.selectedans.delete(option);
     }
-    console.log(this.selectedans);
-
   }
 
   resultOfQuetion(ans: String[]) {
-
-    console.log(this.selectedans.size, ans.length)
-
     if (this.selectedans.size < ans.length || this.selectedans.size > ans.length) {
       this.flag = false;
     }

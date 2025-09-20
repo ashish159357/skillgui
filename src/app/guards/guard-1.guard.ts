@@ -17,7 +17,6 @@ export class Guard1Guard implements CanActivate {
 
 
   checkLogin(url: string): true | UrlTree | false {
-    console.log("Url: " + url)
     let val: string | null = localStorage.getItem('isUserLoggedIn');
 
     if (val != null && val == "true") {

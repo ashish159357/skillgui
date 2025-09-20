@@ -14,7 +14,6 @@ export class AppComponent {
 
   ngOnInit() {
     let storeData = localStorage.getItem("isUserLoggedIn");
-    console.log("StoreData: " + storeData);
 
     if( storeData != null && storeData == "true")
        this.isUser = localStorage.getItem("isUserLoggedIn");

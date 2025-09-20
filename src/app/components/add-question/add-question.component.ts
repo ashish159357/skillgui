@@ -48,8 +48,6 @@ export class AddQuestionComponent implements OnInit {
       this.isEmpty = false;
       this.sendData(q, opt, ans, singleChoice, subject);
     }
-    console.log(singleChoice, multipleChoice, subject)
-
     // this.sendData(q,opt,ans,subject);
   }
 

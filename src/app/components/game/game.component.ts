@@ -61,7 +61,6 @@ export class GameComponent implements OnInit {
   }
 
   onSelectItem(item: string): void {
-    console.log(`Selected item: ${item}`);
     // Optionally, set the input value to the selected item
     const searchInput = document.getElementById('search-input') as HTMLInputElement;
     searchInput.value = item;
