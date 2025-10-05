@@ -42,8 +42,19 @@ export class StartGameComponent implements OnInit {
     _this.stompclient.connect({}, function (frame: any) {
       console.log("Connected : ", frame)
       _this.stompclient.subscribe(topic, function (response: any) {
+        debugger
         _this.response = response;
-        _this.Quetion = _this.response;
+        const parsed = JSON.parse(response.body);
+
+        // Initialize object before setting properties
+        _this.Quetion = {
+          que: parsed.que,
+          subject: parsed.subject,
+          options: parsed.options,
+          ans: parsed.ans,
+          type: parsed.type
+        };
+
       });
     })
   }

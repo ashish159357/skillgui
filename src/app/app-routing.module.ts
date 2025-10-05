@@ -22,7 +22,7 @@ const routes: Routes = [
     component: AppComponent
   },
   {
-    path: 'Admin',
+    path: 'admin',
     component: AdminComponent,
     canActivate: [Guard1Guard]
   },
