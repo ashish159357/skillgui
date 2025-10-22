@@ -14,6 +14,7 @@ import { LoginComponent } from './components/login/login.component';
 import { GameComponent } from './components/game/game.component';
 import { WebSocketServiceComponent } from './services/web-socket-service/web-socket-service.component';
 import { StartGameComponent } from './components/game/start-game/start-game.component';
+import { CountdownComponent } from './countdown/countdown.component';
 
 
 
@@ -31,6 +32,7 @@ import { StartGameComponent } from './components/game/start-game/start-game.comp
     GameComponent,
     WebSocketServiceComponent,
     StartGameComponent,
+    CountdownComponent,
   ],
   imports: [
     BrowserModule,

@@ -12,7 +12,7 @@ import * as Stomp from 'stompjs';
   styleUrls: ['./start-game.component.css']
 })
 export class StartGameComponent implements OnInit {
-
+  timeLimit: any;
   explanationofans: boolean | undefined;
   Quetions: Quetion[] | any = [];
   i = 0;
@@ -42,7 +42,6 @@ export class StartGameComponent implements OnInit {
     _this.stompclient.connect({}, function (frame: any) {
       console.log("Connected : ", frame)
       _this.stompclient.subscribe(topic, function (response: any) {
-        debugger
         _this.response = response;
         const parsed = JSON.parse(response.body);
 
@@ -54,7 +53,12 @@ export class StartGameComponent implements OnInit {
           ans: parsed.ans,
           type: parsed.type
         };
-
+      
+      _this.timeLimit = null
+      setTimeout(() => {
+        _this.timeLimit = parsed.timeLimit;
+      });
+      
       });
     })
   }
