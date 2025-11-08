@@ -1,17 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { GetQuetionSpecificToSubjectService } from 'src/app/services/getQuetionSpecificToSubject/get-quetion-specific-to-subject.service';
 import { Quetion } from 'src/app/model/Quetion/quetion';
-import * as SockJs from 'sockjs-client';
-import { environment } from 'src/environments/environment';
-import * as Stomp from 'stompjs';
+import { WebSocketService, WebSocketMessage } from 'src/app/services/web-socket-service/web-socket.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-start-game',
   templateUrl: './start-game.component.html',
   styleUrls: ['./start-game.component.css']
 })
-export class StartGameComponent implements OnInit {
+export class StartGameComponent implements OnInit, OnDestroy {
   timeLimit: any;
   explanationofans: boolean | undefined;
   Quetions: Quetion[] | any = [];
@@ -20,60 +19,72 @@ export class StartGameComponent implements OnInit {
   selectedans = new Set();
   flag: boolean | undefined;
   gameId: any;
-  stompclient: any;
-  topicPrefix: any = '/topic/game/';
-  response: any;
+  topicPrefix: string = '/topic/game/';
+  private webSocketSubscription?: Subscription;
 
-  constructor(private route: ActivatedRoute, private getquetionspecificTosubjectservice: GetQuetionSpecificToSubjectService)
-  {
-    this.explanationofans = false
+  constructor(
+    private route: ActivatedRoute,
+    private getquetionspecificTosubjectservice: GetQuetionSpecificToSubjectService,
+    private webSocketService: WebSocketService
+  ) {
+    this.explanationofans = false;
   }
 
-  ngOnInit(): void
-  {
+  ngOnInit(): void {
     this.gameId = this.route.snapshot.paramMap.get('gameId');
-    this.createSocketConnection(this.topicPrefix + this.gameId);
+    this.connectToGame(this.topicPrefix + this.gameId);
   }
 
-  createSocketConnection(topic:any){
-    let ws = SockJs(environment.webSocketUrl);
-    this.stompclient = Stomp.over(ws);
-    const _this = this;
-    _this.stompclient.connect({}, function (frame: any) {
-      console.log("Connected : ", frame)
-      _this.stompclient.subscribe(topic, function (response: any) {
-        _this.response = response;
-        const parsed = JSON.parse(response.body);
+  ngOnDestroy(): void {
+    // Clean up WebSocket subscription when component is destroyed
+    if (this.webSocketSubscription) {
+      this.webSocketSubscription.unsubscribe();
+    }
+    this.webSocketService.unsubscribe(this.topicPrefix + this.gameId);
+  }
 
-        if (parsed.eventType == "started")
-        {
-          var que = parsed.payload;
-
-          // Initialize object before setting properties
-          _this.Quetion = {
-            que: que.que,
-            subject: que.subject,
-            options: que.options,
-            ans: que.ans,
-            type: que.type
-          };
+  connectToGame(topic: string): void {
+    // Connect to WebSocket and subscribe to game topic
+    this.webSocketService.connect().then(() => {
+      // Subscribe to the game topic
+      this.webSocketSubscription = this.webSocketService.subscribe(topic).subscribe(
+        (message: WebSocketMessage) => {
+          this.handleWebSocketMessage(message);
+        },
+        (error) => {
+          console.error('WebSocket subscription error:', error);
         }
-        else if(parsed.eventType == "game.get.players.response")
-        {
-            console.log(parsed.payload)
-        }
-      
-      _this.timeLimit = null
+      );
 
+      // Send request to get players
+      this.webSocketService.send(`/server/game/${this.gameId}`, 'game.get.players.request');
+    }).catch((error) => {
+      console.error('Failed to connect to WebSocket:', error);
+    });
+  }
+
+  handleWebSocketMessage(message: WebSocketMessage): void {
+    if (message.eventType === 'started') {
+      const que = message.payload;
+
+      // Initialize question object
+      this.Quetion = {
+        que: que.que,
+        subject: que.subject,
+        options: que.options,
+        ans: que.ans,
+        type: que.type
+      };
+
+      // Set time limit
+      this.timeLimit = null;
       setTimeout(() => {
-        _this.timeLimit = parsed.payload.timeLimit;
+        this.timeLimit = message.payload.timeLimit;
       });
-      
-      });
-
-      _this.stompclient.send("/server/game/" + _this.gameId, {}, "game.get.players.request")
-
-    })
+    }
+    else if (message.eventType === 'game.get.players.response') {
+      console.log('Players:', message.payload);
+    }
   }
 
   setQuetions(data:any)

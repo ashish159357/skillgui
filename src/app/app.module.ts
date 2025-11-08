@@ -12,7 +12,7 @@ import { StartTestComponent } from './components/start-test/start-test.component
 import { RegisterComponent } from './components/register/register.component';
 import { LoginComponent } from './components/login/login.component';
 import { GameComponent } from './components/game/game.component';
-import { WebSocketServiceComponent } from './services/web-socket-service/web-socket-service.component';
+import { WebSocketService } from './services/web-socket-service/web-socket.service';
 import { StartGameComponent } from './components/game/start-game/start-game.component';
 import { CountdownComponent } from './countdown/countdown.component';
 import { ListPlayersComponent } from './components/game/list-players/list-players.component';
@@ -31,7 +31,6 @@ import { ListPlayersComponent } from './components/game/list-players/list-player
     RegisterComponent,
     LoginComponent,
     GameComponent,
-    WebSocketServiceComponent,
     StartGameComponent,
     CountdownComponent,
     ListPlayersComponent,
@@ -44,7 +43,7 @@ import { ListPlayersComponent } from './components/game/list-players/list-player
     AppRoutingModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  providers: [],
+  providers: [WebSocketService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
