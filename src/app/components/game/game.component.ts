@@ -6,6 +6,7 @@ import * as Stomp from 'stompjs';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { environment } from 'src/environments/environment';
 import { GameService } from 'src/app/services/gameService/game.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-game',
@@ -31,8 +32,13 @@ export class GameComponent implements OnInit {
     message: ''
   };
 
-  constructor(private subjectService: GetSubjectsService, private eRef: ElementRef, private fb: FormBuilder, private gameService: GameService) {
-
+  constructor(
+    private subjectService: GetSubjectsService,
+    private eRef: ElementRef,
+    private fb: FormBuilder,
+    private gameService: GameService,
+    private router: Router
+  ) {
     this.isGameRunning = false;
 
     this.form = this.fb.group({
@@ -77,7 +83,7 @@ export class GameComponent implements OnInit {
   onSubmit(): void {
     if (this.form.valid) {
       console.log('Form Submitted', this.form.value);
-      this.showPopup();
+      this.createGameAndNavigate();
     } else {
       console.log('Form is invalid : ', this.form.getError);
     }
@@ -105,6 +111,23 @@ export class GameComponent implements OnInit {
       this.filteredsubjects = [];
       this.selectedIndex = -1;
     }
+  }
+
+  createGameAndNavigate(): void {
+    this.gameService.createGame(this.form).subscribe(
+      (res: any) => {
+        // Navigate to start-game component with the gameId
+        if (res && res.key) {
+          this.router.navigate(['/game', res.key]);
+        } else {
+          console.error('Game creation failed: No game key received');
+        }
+      },
+      (error: any) => {
+        console.error('Error creating game:', error);
+        // Optionally show an error message to the user
+      }
+    );
   }
 
   showPopup() {
