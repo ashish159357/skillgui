@@ -15,6 +15,7 @@ import { GameComponent } from './components/game/game.component';
 import { WebSocketServiceComponent } from './services/web-socket-service/web-socket-service.component';
 import { StartGameComponent } from './components/game/start-game/start-game.component';
 import { CountdownComponent } from './countdown/countdown.component';
+import { ListPlayersComponent } from './components/game/list-players/list-players.component';
 
 
 
@@ -33,6 +34,7 @@ import { CountdownComponent } from './countdown/countdown.component';
     WebSocketServiceComponent,
     StartGameComponent,
     CountdownComponent,
+    ListPlayersComponent,
   ],
   imports: [
     BrowserModule,

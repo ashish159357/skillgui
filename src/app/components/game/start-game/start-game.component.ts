@@ -45,21 +45,34 @@ export class StartGameComponent implements OnInit {
         _this.response = response;
         const parsed = JSON.parse(response.body);
 
-        // Initialize object before setting properties
-        _this.Quetion = {
-          que: parsed.que,
-          subject: parsed.subject,
-          options: parsed.options,
-          ans: parsed.ans,
-          type: parsed.type
-        };
+        if (parsed.eventType == "started")
+        {
+          var que = parsed.payload;
+
+          // Initialize object before setting properties
+          _this.Quetion = {
+            que: que.que,
+            subject: que.subject,
+            options: que.options,
+            ans: que.ans,
+            type: que.type
+          };
+        }
+        else if(parsed.eventType == "game.get.players.response")
+        {
+            console.log(parsed.payload)
+        }
       
       _this.timeLimit = null
+
       setTimeout(() => {
-        _this.timeLimit = parsed.timeLimit;
+        _this.timeLimit = parsed.payload.timeLimit;
       });
       
       });
+
+      _this.stompclient.send("/server/game/" + _this.gameId, {}, "game.get.players.request")
+
     })
   }
 

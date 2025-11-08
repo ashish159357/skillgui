@@ -1,0 +1,15 @@
+<div class="player-list-container">
+    <h2 class="title">🎨 Players in the Lobby</h2>
+  
+    <div class="players">
+      <div
+        class="player-card"
+        *ngFor="let player of players; index as i"
+        [class.highlight]="i === 0"
+      >
+        <div class="avatar">{{ player.name.charAt(0) | uppercase }}</div>
+        <div class="player-name">{{ player.name }}</div>
+      </div>
+    </div>
+  </div>
+  

@@ -24,13 +24,19 @@ export class GameComponent implements OnInit {
   generatedGameLink: string = environment.gameUrl + 'game/';
   copiedMessage: string = '';
 
+  isGameRunning: boolean;
+
   serverResponse: any = {
     errorCode: '',
     message: ''
   };
 
   constructor(private subjectService: GetSubjectsService, private eRef: ElementRef, private fb: FormBuilder, private gameService: GameService) {
+
+    this.isGameRunning = false;
+
     this.form = this.fb.group({
+      host_username: ['', Validators.required],
       subject: ['', Validators.required],
       no_of_player: [null, [Validators.required, Validators.min(1)]],
       no_of_question: [null, [Validators.required, Validators.min(1)]],
