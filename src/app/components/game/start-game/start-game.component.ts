@@ -22,6 +22,10 @@ export class StartGameComponent implements OnInit, OnDestroy {
   topicPrefix: string = '/topic/game/';
   private webSocketSubscription?: Subscription;
 
+  // Game status and players
+  gameStatus: string = 'connecting'; // 'connecting', 'waiting', 'started', 'ended'
+  players: any[] = [];
+
   constructor(
     private route: ActivatedRoute,
     private getquetionspecificTosubjectservice: GetQuetionSpecificToSubjectService,
@@ -56,34 +60,105 @@ export class StartGameComponent implements OnInit, OnDestroy {
         }
       );
 
-      // Send request to get players
-      this.webSocketService.send(`/server/game/${this.gameId}`, 'game.get.players.request');
+      // Send request to get game status
+      this.webSocketService.send(`/server/game/${this.gameId}`, 'game.get.status.request');
+
     }).catch((error) => {
       console.error('Failed to connect to WebSocket:', error);
+      this.gameStatus = 'error';
     });
   }
 
   handleWebSocketMessage(message: WebSocketMessage): void {
-    if (message.eventType === 'started') {
-      const que = message.payload;
+    console.log('WebSocket message received:', message);
 
-      // Initialize question object
-      this.Quetion = {
-        que: que.que,
-        subject: que.subject,
-        options: que.options,
-        ans: que.ans,
-        type: que.type
-      };
+    switch (message.eventType) {
+      case 'game.get.status.response':
+        // Handle game status response
+        if (message.payload) {
+          this.gameStatus = message.payload.toLowerCase();
+          console.log('Game status:', this.gameStatus);
 
-      // Set time limit
-      this.timeLimit = null;
-      setTimeout(() => {
-        this.timeLimit = message.payload.timeLimit;
-      });
-    }
-    else if (message.eventType === 'game.get.players.response') {
-      console.log('Players:', message.payload);
+          // Send request to get players
+          this.webSocketService.send(`/server/game/${this.gameId}`, 'game.get.players.request');
+        }
+        break;
+
+      case 'game.status.changed':
+        // Handle real-time status changes
+        if (message.payload && message.payload.status) {
+          this.gameStatus = message.payload.status.toLowerCase();
+          console.log('Game status changed to:', this.gameStatus);
+        }
+        break;
+
+      case 'game.get.players.response':
+        // Handle players list response
+        if (message.payload) {
+          this.players = Array.isArray(message.payload) ? message.payload : message.payload.players || [];
+          console.log('Players:', this.players);
+        }
+        break;
+
+      case 'player.joined':
+        // Handle new player joining
+        if (message.payload) {
+          this.players.push(message.payload);
+          console.log('New player joined:', message.payload);
+        }
+        break;
+
+      case 'player.left':
+        // Handle player leaving
+        if (message.payload && message.payload.id) {
+          this.players = this.players.filter(p => p.id !== message.payload.id);
+          console.log('Player left:', message.payload);
+        }
+        break;
+
+      case 'started':
+        // Game has started - show question
+        this.gameStatus = 'started';
+        const que = message.payload;
+
+        // Initialize question object
+        this.Quetion = {
+          que: que.que,
+          subject: que.subject,
+          options: que.options,
+          ans: que.ans,
+          type: que.type
+        };
+
+        // Set time limit
+        this.timeLimit = null;
+        setTimeout(() => {
+          this.timeLimit = message.payload.timeLimit;
+        });
+        break;
+
+      case 'next.question':
+        // Handle next question
+        if (message.payload) {
+          this.Quetion = {
+            que: message.payload.que,
+            subject: message.payload.subject,
+            options: message.payload.options,
+            ans: message.payload.ans,
+            type: message.payload.type
+          };
+          this.timeLimit = message.payload.timeLimit;
+        }
+        break;
+
+      case 'game.ended':
+        // Game has ended
+        this.gameStatus = 'ended';
+        console.log('Game ended');
+        break;
+
+      default:
+        console.log('Unhandled event type:', message.eventType);
     }
   }
 
