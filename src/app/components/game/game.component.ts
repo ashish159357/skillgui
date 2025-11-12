@@ -42,7 +42,6 @@ export class GameComponent implements OnInit {
     this.isGameRunning = false;
 
     this.form = this.fb.group({
-      host_username: ['', Validators.required],
       subject: ['', Validators.required],
       no_of_player: [null, [Validators.required, Validators.min(1)]],
       no_of_question: [null, [Validators.required, Validators.min(1)]],

@@ -26,6 +26,12 @@ export class StartGameComponent implements OnInit, OnDestroy {
   gameStatus: string = 'connecting'; // 'connecting', 'waiting', 'started', 'ended'
   players: any[] = [];
 
+  // Username prompt
+  showUsernamePrompt: boolean = true;
+  username: string = '';
+  usernameError: string = '';
+  isNewJoin: boolean = false; // Track if this is a fresh join (not a refresh)
+
   constructor(
     private route: ActivatedRoute,
     private getquetionspecificTosubjectservice: GetQuetionSpecificToSubjectService,
@@ -36,7 +42,15 @@ export class StartGameComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.gameId = this.route.snapshot.paramMap.get('gameId');
-    this.connectToGame(this.topicPrefix + this.gameId);
+
+    // Check if username is already stored in session
+    const storedUsername = sessionStorage.getItem(`game_${this.gameId}_username`);
+
+    if (storedUsername) {
+      this.username = storedUsername;
+      this.showUsernamePrompt = false;
+      this.connectToGame(this.topicPrefix + this.gameId);
+    }
   }
 
   ngOnDestroy(): void {
@@ -45,6 +59,35 @@ export class StartGameComponent implements OnInit, OnDestroy {
       this.webSocketSubscription.unsubscribe();
     }
     this.webSocketService.unsubscribe(this.topicPrefix + this.gameId);
+  }
+
+  submitUsername(): void {
+    // Validate username
+    if (!this.username || this.username.trim().length === 0) {
+      this.usernameError = 'Username is required';
+      return;
+    }
+
+    if (this.username.trim().length < 3) {
+      this.usernameError = 'Username must be at least 3 characters';
+      return;
+    }
+
+    if (this.username.trim().length > 20) {
+      this.usernameError = 'Username must be less than 20 characters';
+      return;
+    }
+
+    // Store username in session storage
+    sessionStorage.setItem(`game_${this.gameId}_username`, this.username.trim());
+
+    // Mark this as a new join (not a refresh/reconnection)
+    this.isNewJoin = true;
+
+    // Hide prompt and connect to game
+    this.showUsernamePrompt = false;
+    this.usernameError = '';
+    this.connectToGame(this.topicPrefix + this.gameId);
   }
 
   connectToGame(topic: string): void {
@@ -62,6 +105,24 @@ export class StartGameComponent implements OnInit, OnDestroy {
 
       // Send request to get game status
       this.webSocketService.send(`/server/game/${this.gameId}`, 'game.get.status.request');
+
+      debugger
+      // Send player joined request ONLY if this is a new join (not a refresh)
+      if (this.username && this.isNewJoin) {
+        console.log('Sending player joined request with username:', this.username);
+        this.webSocketService.send(`/server/game/${this.gameId}/join`, {
+          eventType: 'player.joined',
+          payload: {
+            username: this.username,
+            gameId: this.gameId
+          }
+        });
+        // Reset the flag after sending
+        this.isNewJoin = false;
+      }
+
+      // Send request to get players list
+      this.webSocketService.send(`/server/game/${this.gameId}`, 'game.get.players.request');
 
     }).catch((error) => {
       console.error('Failed to connect to WebSocket:', error);

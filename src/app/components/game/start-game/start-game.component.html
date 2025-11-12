@@ -1,5 +1,52 @@
+<!-- Username Prompt -->
+<div *ngIf="showUsernamePrompt" class="flex items-center justify-center min-h-screen bg-gradient-to-br from-indigo-50 to-purple-50">
+    <div class="bg-white rounded-2xl shadow-2xl p-8 md:p-12 max-w-md w-full mx-4">
+        <div class="text-center mb-8">
+            <div class="text-6xl mb-4">🎮</div>
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">Join the Game!</h1>
+            <p class="text-gray-600">Enter your username to continue</p>
+        </div>
+
+        <form (ngSubmit)="submitUsername()" class="space-y-6">
+            <div>
+                <label for="username" class="block text-sm font-semibold text-gray-700 mb-2">
+                    Username
+                </label>
+                <input
+                    type="text"
+                    id="username"
+                    [(ngModel)]="username"
+                    name="username"
+                    placeholder="Enter your username"
+                    maxlength="20"
+                    class="w-full px-4 py-3 text-lg rounded-lg border-2 border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:outline-none transition"
+                    [class.border-red-500]="usernameError"
+                    autofocus
+                />
+                <p *ngIf="usernameError" class="text-red-500 text-sm mt-2">
+                    {{ usernameError }}
+                </p>
+                <p class="text-gray-500 text-xs mt-2">
+                    3-20 characters
+                </p>
+            </div>
+
+            <button
+                type="submit"
+                class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg transition transform hover:scale-105 active:scale-95 shadow-lg"
+            >
+                Join Game →
+            </button>
+        </form>
+
+        <div class="mt-6 text-center">
+            <p class="text-sm text-gray-500">Game ID: <span class="font-mono font-semibold">{{ gameId }}</span></p>
+        </div>
+    </div>
+</div>
+
 <!-- Connecting State -->
-<div *ngIf="gameStatus === 'connecting'" class="flex items-center justify-center min-h-screen bg-gray-100">
+<div *ngIf="!showUsernamePrompt && gameStatus === 'connecting'" class="flex items-center justify-center min-h-screen bg-gray-100">
     <div class="text-center">
         <div class="animate-spin rounded-full h-16 w-16 border-b-4 border-indigo-600 mx-auto mb-4"></div>
         <h2 class="text-2xl font-bold text-gray-700">Connecting to game...</h2>
@@ -7,7 +54,7 @@
 </div>
 
 <!-- Waiting State - Show Players List -->
-<div *ngIf="gameStatus === 'waiting'" class="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-50 py-12 px-4">
+<div *ngIf="!showUsernamePrompt && gameStatus === 'waiting'" class="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-50 py-12 px-4">
     <div class="max-w-4xl mx-auto">
         <div class="bg-white rounded-2xl shadow-xl p-8">
             <h1 class="text-4xl font-bold text-center text-indigo-600 mb-2">🎮 Game Lobby</h1>
@@ -54,7 +101,7 @@
 </div>
 
 <!-- Started State - Show Questions -->
-<div *ngIf="gameStatus === 'started'">
+<div *ngIf="!showUsernamePrompt && gameStatus === 'started'">
     <app-countdown [timeLeft]="timeLimit"></app-countdown>
     <div *ngIf="Quetion" style="background-color: whitesmoke; min-height: 100vh;padding-top:5%;">
 
@@ -110,7 +157,7 @@
 </div>
 
 <!-- Game Ended State -->
-<div *ngIf="gameStatus === 'ended'" class="flex items-center justify-center min-h-screen bg-gray-100">
+<div *ngIf="!showUsernamePrompt && gameStatus === 'ended'" class="flex items-center justify-center min-h-screen bg-gray-100">
     <div class="text-center bg-white rounded-2xl shadow-xl p-12">
         <h2 class="text-4xl font-bold text-gray-800 mb-4">🏁 Game Ended</h2>
         <p class="text-lg text-gray-600 mb-6">Thanks for playing!</p>
@@ -122,7 +169,7 @@
 </div>
 
 <!-- Error State -->
-<div *ngIf="gameStatus === 'error'" class="flex items-center justify-center min-h-screen bg-gray-100">
+<div *ngIf="!showUsernamePrompt && gameStatus === 'error'" class="flex items-center justify-center min-h-screen bg-gray-100">
     <div class="text-center bg-white rounded-2xl shadow-xl p-12">
         <h2 class="text-4xl font-bold text-red-600 mb-4">❌ Connection Error</h2>
         <p class="text-lg text-gray-600 mb-6">Failed to connect to the game server.</p>
