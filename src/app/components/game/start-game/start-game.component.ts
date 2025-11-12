@@ -32,6 +32,9 @@ export class StartGameComponent implements OnInit, OnDestroy {
   usernameError: string = '';
   isNewJoin: boolean = false; // Track if this is a fresh join (not a refresh)
 
+  // Game control
+  isHost: boolean = false; // Track if current user is the host
+
   constructor(
     private route: ActivatedRoute,
     private getquetionspecificTosubjectservice: GetQuetionSpecificToSubjectService,
@@ -106,7 +109,6 @@ export class StartGameComponent implements OnInit, OnDestroy {
       // Send request to get game status
       this.webSocketService.send(`/server/game/${this.gameId}`, 'game.get.status.request');
 
-      debugger
       // Send player joined request ONLY if this is a new join (not a refresh)
       if (this.username && this.isNewJoin) {
         console.log('Sending player joined request with username:', this.username);
@@ -128,6 +130,18 @@ export class StartGameComponent implements OnInit, OnDestroy {
       console.error('Failed to connect to WebSocket:', error);
       this.gameStatus = 'error';
     });
+  }
+
+  startGame(): void {
+    if (!this.isHost) {
+      console.warn('Only the host can start the game');
+      return;
+    }
+
+    console.log('Starting game...');
+
+    // Send start game request to server
+    this.webSocketService.send(`/server/game/${this.gameId}`, 'game.start.request');
   }
 
   handleWebSocketMessage(message: WebSocketMessage): void {
@@ -158,6 +172,11 @@ export class StartGameComponent implements OnInit, OnDestroy {
         if (message.payload) {
           this.players = Array.isArray(message.payload) ? message.payload : message.payload.players || [];
           console.log('Players:', this.players);
+
+          // Check if current user is the first player (host)
+          if (this.players.length > 0 && this.players[0] === this.username) {
+            this.isHost = true;
+          }
         }
         break;
 

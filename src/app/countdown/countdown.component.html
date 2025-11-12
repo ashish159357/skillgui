@@ -1,5 +1,58 @@
-<div class="countdown">
-    <h2>Time left: {{ timeLeft }}s</h2>
-    <button (click)="restart()">Restart</button>
+<!-- Cartoonish Countdown Timer - Skribbl.io Style -->
+<div class="countdown-container"
+     [class.warning]="isWarning"
+     [class.critical]="isCritical"
+     [class.pulsing]="isPulsing">
+
+  <!-- Main Timer Card -->
+  <div class="timer-card">
+
+    <!-- Decorative Stars -->
+    <div class="stars">
+      <span class="star star-1">⭐</span>
+      <span class="star star-2">✨</span>
+      <span class="star star-3">💫</span>
+    </div>
+
+    <!-- Timer Display -->
+    <div class="timer-display">
+      <div class="emoji-icon">{{ getTimerEmoji() }}</div>
+      <div class="time-number">{{ timeLeft }}</div>
+      <div class="time-label">seconds</div>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="progress-container">
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill"
+             [style.width.%]="getProgressPercentage()"
+             [style.background-color]="getProgressColor()">
+          <div class="progress-shine"></div>
+        </div>
+      </div>
+      <div class="progress-dots">
+        <span class="dot" *ngFor="let i of [1,2,3,4,5]"></span>
+      </div>
+    </div>
+
+    <!-- Decorative Elements -->
+    <div class="timer-decoration">
+      <div class="bubble bubble-1"></div>
+      <div class="bubble bubble-2"></div>
+      <div class="bubble bubble-3"></div>
+    </div>
+
   </div>
-  
+
+  <!-- Time Status Message -->
+  <div class="status-message" *ngIf="timeLeft > 0">
+    <span *ngIf="!isWarning && !isCritical">🎮 Take your time!</span>
+    <span *ngIf="isWarning && !isCritical">⚡ Hurry up!</span>
+    <span *ngIf="isCritical">🔥 Time's running out!</span>
+  </div>
+
+  <div class="status-message timeout" *ngIf="timeLeft === 0">
+    ⏰ Time's up!
+  </div>
+
+</div>
