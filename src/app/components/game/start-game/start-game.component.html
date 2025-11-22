@@ -112,56 +112,133 @@
 </div>
 
 <!-- Started State - Show Questions -->
-<div *ngIf="!showUsernamePrompt && gameStatus === 'started'">
-    <app-countdown [timeLeft]="timeLimit"></app-countdown>
-    <div *ngIf="Quetion" style="background-color: whitesmoke; min-height: 100vh;padding-top:5%;">
+<div *ngIf="!showUsernamePrompt && gameStatus === 'started'" class="game-started-container">
 
-        <div class="Quetion-container">
+    <!-- Countdown Timer -->
+    <app-countdown [timeLeft]="timeLimit" [totalTime]="timeLimit"></app-countdown>
 
-        <div class="Quetion">
-            <h3 style="font-size:larger;">
-                {{Quetion.que}}
-            </h3>
-            <div *ngIf="Quetion.type">
-                <b style="font-size: small;padding-top: 50%;">Type: Single Choice</b>
-            </div>
+    <!-- Question Section -->
+    <div *ngIf="Quetion" class="question-wrapper">
 
-            <div *ngIf="!Quetion.type">
-                <b style="font-size: small;padding-top: 50%;">Type: Multiple Choice </b>
-            </div>
+        <!-- Decorative Background Elements -->
+        <div class="bg-decoration">
+            <div class="floating-shape shape-1">🎮</div>
+            <div class="floating-shape shape-2">⭐</div>
+            <div class="floating-shape shape-3">💡</div>
+            <div class="floating-shape shape-4">🎯</div>
         </div>
 
-        <div class="forms-elements options">
-            <label class="flex items-center option" *ngFor="let option of Quetion.options">
-                <div *ngIf="option">
-                    <div *ngIf="Quetion.type">
-                        <input #singleChoice type="radio" class="form-radio" name="radio"
-                            (change)="checkAns(singleChoice.checked,option,Quetion.ans,Quetion.type)">
-                        <span class="ml-2 cursor-pointer">{{option}}</span>
+        <div class="question-container">
+
+            <!-- Question Card -->
+            <div class="question-card">
+
+                <!-- Question Header -->
+                <div class="question-header">
+                    <div class="question-badge">
+                        <span class="badge-icon">❓</span>
+                        <span class="badge-text">Question</span>
                     </div>
-                    <div *ngIf="!Quetion.type">
-                        <input #singleChoice type="checkbox" class="form-radio" name="radio"
-                            (change)="checkAns(singleChoice.checked,option,Quetion.ans,Quetion.type)">
-                        <span class="ml-2 cursor-pointer">{{option}}</span>
+
+                    <!-- Question Type Badge -->
+                    <div class="type-badge" [class.single-choice]="Quetion.type" [class.multiple-choice]="!Quetion.type">
+                        <span *ngIf="Quetion.type">
+                            <span class="type-icon">🎯</span>
+                            Single Choice
+                        </span>
+                        <span *ngIf="!Quetion.type">
+                            <span class="type-icon">✨</span>
+                            Multiple Choice
+                        </span>
                     </div>
                 </div>
-            </label>
-        </div>
 
-        <input type="submit" class="btn btn-primary next-button" value="Previous" (click)="previousPage()" />
-        <input type="submit" class="btn btn-primary next-button" value="Next" (click)="nextPage()" />
-        <input type="submit" class="btn btn-primary next-button" value="Check" (click)="resultOfQuetion(Quetion.ans)" />
+                <!-- Question Text -->
+                <div class="question-text">
+                    <h2>{{ Quetion.que }}</h2>
+                </div>
+            </div>
 
-        <div>
-            <button class="btn btn-primary next-button" aria-controls="basicCollapse" aria-expanded="false"
-                x-spread="trigger" (click)="explanation()">Explanation</button>
-            <div class="card card-body mt-2" id="basicCollapse" x-spread="collapse" *ngIf="explanationofans">Anim
-                pariatur cliche
-                reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh
-                helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.</div>
-        </div>
+            <!-- Options List -->
+            <div class="options-container">
+                <label class="option-card"
+                       *ngFor="let option of Quetion.options; let i = index"
+                       [class.selected]="selectedans.has(option)">
+                    <div *ngIf="option" class="option-content">
 
+                        <!-- Option Letter Badge -->
+                        <div class="option-letter">
+                            {{ ['A', 'B', 'C', 'D', 'E', 'F'][i] }}
+                        </div>
 
+                        <!-- Radio/Checkbox Input -->
+                        <div class="option-input">
+                            <input #singleChoice
+                                   *ngIf="Quetion.type"
+                                   type="radio"
+                                   class="custom-radio"
+                                   name="radio"
+                                   [id]="'option-' + i"
+                                   (change)="checkAns(singleChoice.checked, option, Quetion.ans, Quetion.type)">
+
+                            <input #singleChoice
+                                   *ngIf="!Quetion.type"
+                                   type="checkbox"
+                                   class="custom-checkbox"
+                                   name="checkbox"
+                                   [id]="'option-' + i"
+                                   (change)="checkAns(singleChoice.checked, option, Quetion.ans, Quetion.type)">
+                        </div>
+
+                        <!-- Option Text -->
+                        <div class="option-text">
+                            <label [for]="'option-' + i">{{ option }}</label>
+                        </div>
+
+                        <!-- Checkmark Icon -->
+                        <div class="option-checkmark" *ngIf="selectedans.has(option)">
+                            ✓
+                        </div>
+                    </div>
+                </label>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button class="game-btn btn-secondary" (click)="previousPage()">
+                    <span class="btn-icon">⬅️</span>
+                    <span class="btn-text">Previous</span>
+                </button>
+
+                <button class="game-btn btn-primary" (click)="nextPage()">
+                    <span class="btn-text">Next</span>
+                    <span class="btn-icon">➡️</span>
+                </button>
+
+                <button class="game-btn btn-success" (click)="resultOfQuetion(Quetion.ans)">
+                    <span class="btn-icon">✓</span>
+                    <span class="btn-text">Check Answer</span>
+                </button>
+            </div>
+
+            <!-- Explanation Section -->
+            <div class="explanation-section">
+                <button class="game-btn btn-info" (click)="explanation()">
+                    <span class="btn-icon">💡</span>
+                    <span class="btn-text">{{ explanationofans ? 'Hide' : 'Show' }} Explanation</span>
+                </button>
+
+                <div class="explanation-card" *ngIf="explanationofans">
+                    <div class="explanation-header">
+                        <span class="explanation-icon">📚</span>
+                        <span class="explanation-title">Explanation</span>
+                    </div>
+                    <div class="explanation-content">
+                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid.
+                        Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+                    </div>
+                </div>
+            </div>
 
         </div>
     </div>

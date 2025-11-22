@@ -217,6 +217,10 @@ export class StartGameComponent implements OnInit, OnDestroy {
         });
         break;
 
+      case 'stoped':
+        this.gameStatus = 'ended'
+        break;
+
       case 'next.question':
         // Handle next question
         if (message.payload) {

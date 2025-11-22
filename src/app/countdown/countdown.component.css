@@ -1,48 +1,37 @@
-/* Cartoonish Countdown Timer - Skribbl.io Inspired */
+/* Clean Countdown Timer */
 
 .countdown-container {
   position: fixed;
   top: 20px;
   right: 20px;
   z-index: 1000;
-  font-family: 'Comic Sans MS', 'Chalkboard SE', 'Comic Neue', cursive, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 /* Main Timer Card */
 .timer-card {
   position: relative;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: 25px;
-  padding: 20px 30px;
-  box-shadow:
-    0 10px 30px rgba(0, 0, 0, 0.3),
-    0 0 0 5px #fff,
-    0 0 0 8px #667eea;
-  transform: rotate(-2deg);
-  transition: all 0.3s ease;
-  min-width: 180px;
+  background: #667eea;
+  border-radius: 16px;
+  padding: 20px 28px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s ease;
+  min-width: 160px;
 }
 
 .timer-card:hover {
-  transform: rotate(0deg) scale(1.05);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
 }
 
 /* Warning State */
 .countdown-container.warning .timer-card {
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-  box-shadow:
-    0 10px 30px rgba(245, 87, 108, 0.4),
-    0 0 0 5px #fff,
-    0 0 0 8px #f5576c;
+  background: #ed8936;
 }
 
 /* Critical State */
 .countdown-container.critical .timer-card {
-  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
-  box-shadow:
-    0 10px 30px rgba(255, 107, 107, 0.5),
-    0 0 0 5px #fff,
-    0 0 0 8px #ff6b6b;
+  background: #f56565;
   animation: shake 0.5s infinite;
 }
 
@@ -53,57 +42,34 @@
 
 @keyframes pulse {
   0%, 100% {
-    transform: rotate(-2deg) scale(1);
+    transform: scale(1);
   }
   50% {
-    transform: rotate(-2deg) scale(1.1);
+    transform: scale(1.05);
   }
 }
 
 @keyframes shake {
-  0%, 100% { transform: rotate(-2deg) translateX(0); }
-  25% { transform: rotate(-4deg) translateX(-5px); }
-  75% { transform: rotate(0deg) translateX(5px); }
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-3px); }
+  75% { transform: translateX(3px); }
 }
 
-/* Decorative Stars */
+/* Decorative Stars - Simplified */
 .stars {
   position: absolute;
-  top: -15px;
+  top: -12px;
   left: 0;
   right: 0;
   text-align: center;
   pointer-events: none;
+  opacity: 0.6;
 }
 
 .star {
   display: inline-block;
-  font-size: 20px;
-  animation: twinkle 1.5s infinite;
-  margin: 0 5px;
-}
-
-.star-1 {
-  animation-delay: 0s;
-}
-
-.star-2 {
-  animation-delay: 0.5s;
-}
-
-.star-3 {
-  animation-delay: 1s;
-}
-
-@keyframes twinkle {
-  0%, 100% {
-    opacity: 1;
-    transform: scale(1) rotate(0deg);
-  }
-  50% {
-    opacity: 0.5;
-    transform: scale(1.2) rotate(180deg);
-  }
+  font-size: 16px;
+  margin: 0 4px;
 }
 
 /* Timer Display */
@@ -115,210 +81,77 @@
 }
 
 .emoji-icon {
-  font-size: 40px;
-  margin-bottom: 5px;
-  animation: bounce 1s infinite;
-}
-
-@keyframes bounce {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
+  font-size: 28px;
+  margin-bottom: 4px;
 }
 
 .time-number {
-  font-size: 56px;
-  font-weight: 900;
+  font-size: 48px;
+  font-weight: 700;
   line-height: 1;
-  text-shadow:
-    3px 3px 0 rgba(0, 0, 0, 0.2),
-    -1px -1px 0 rgba(255, 255, 255, 0.3);
-  letter-spacing: -2px;
+  letter-spacing: -1px;
 }
 
 .time-label {
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 12px;
+  font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 2px;
-  margin-top: 5px;
+  letter-spacing: 1px;
+  margin-top: 4px;
   opacity: 0.9;
 }
 
 /* Progress Bar */
 .progress-container {
-  margin-top: 15px;
+  margin-top: 12px;
   position: relative;
 }
 
 .progress-bar-bg {
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 20px;
-  height: 16px;
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 10px;
+  height: 8px;
   overflow: hidden;
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
-  border: 3px solid white;
 }
 
 .progress-bar-fill {
   height: 100%;
-  border-radius: 20px;
+  border-radius: 10px;
   transition: width 1s linear, background-color 0.3s ease;
   position: relative;
-  overflow: hidden;
 }
 
 .progress-shine {
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.4),
-    transparent
-  );
-  animation: shine 2s infinite;
-}
-
-@keyframes shine {
-  0% {
-    left: -100%;
-  }
-  100% {
-    left: 100%;
-  }
+  display: none;
 }
 
 .progress-dots {
-  display: flex;
-  justify-content: space-around;
-  margin-top: 8px;
+  display: none;
 }
 
-.dot {
-  width: 8px;
-  height: 8px;
-  background: white;
-  border-radius: 50%;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  animation: dotBounce 1.4s infinite ease-in-out;
-}
-
-.dot:nth-child(1) { animation-delay: 0s; }
-.dot:nth-child(2) { animation-delay: 0.2s; }
-.dot:nth-child(3) { animation-delay: 0.4s; }
-.dot:nth-child(4) { animation-delay: 0.6s; }
-.dot:nth-child(5) { animation-delay: 0.8s; }
-
-@keyframes dotBounce {
-  0%, 80%, 100% {
-    transform: scale(0.8);
-    opacity: 0.5;
-  }
-  40% {
-    transform: scale(1.2);
-    opacity: 1;
-  }
-}
-
-/* Decorative Bubbles */
+/* Decorative Bubbles - Removed for cleaner look */
 .timer-decoration {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  pointer-events: none;
-  overflow: hidden;
-  border-radius: 25px;
+  display: none;
 }
 
 .bubble {
-  position: absolute;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 50%;
-  animation: float 3s infinite ease-in-out;
-}
-
-.bubble-1 {
-  width: 30px;
-  height: 30px;
-  top: 20%;
-  left: 10%;
-  animation-delay: 0s;
-}
-
-.bubble-2 {
-  width: 20px;
-  height: 20px;
-  top: 60%;
-  right: 15%;
-  animation-delay: 1s;
-}
-
-.bubble-3 {
-  width: 25px;
-  height: 25px;
-  bottom: 20%;
-  left: 70%;
-  animation-delay: 2s;
-}
-
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0) scale(1);
-    opacity: 0.3;
-  }
-  50% {
-    transform: translateY(-20px) scale(1.1);
-    opacity: 0.6;
-  }
+  display: none;
 }
 
 /* Status Message */
 .status-message {
-  margin-top: 12px;
+  margin-top: 10px;
   text-align: center;
-  font-size: 16px;
-  font-weight: 700;
+  font-size: 13px;
+  font-weight: 600;
   color: #fff;
-  background: rgba(0, 0, 0, 0.2);
-  padding: 8px 16px;
-  border-radius: 20px;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  animation: slideIn 0.3s ease;
+  background: rgba(0, 0, 0, 0.15);
+  padding: 6px 12px;
+  border-radius: 8px;
 }
 
 .status-message.timeout {
-  background: #ff6b6b;
-  animation: flashTimeout 0.5s infinite;
-}
-
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes flashTimeout {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.7;
-  }
+  background: rgba(0, 0, 0, 0.25);
 }
 
 /* Responsive Design */
@@ -329,20 +162,20 @@
   }
 
   .timer-card {
-    padding: 15px 20px;
-    min-width: 150px;
+    padding: 16px 22px;
+    min-width: 140px;
   }
 
   .time-number {
-    font-size: 42px;
+    font-size: 40px;
   }
 
   .emoji-icon {
-    font-size: 32px;
+    font-size: 24px;
   }
 
   .status-message {
-    font-size: 14px;
-    padding: 6px 12px;
+    font-size: 12px;
+    padding: 5px 10px;
   }
 }
